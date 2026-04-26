@@ -1,0 +1,47 @@
+HOW TO SET UP YOUR GOOGLE SHEETS PROSPECT LIST
+===============================================
+
+Step 1: Create your Google Sheet
+- Go to sheets.google.com
+- Create a new spreadsheet called "Sara Insurance Prospects"
+- In Sheet1, add these column headers in Row 1:
+  A: Timestamp  B: Form  C: Name  D: Email  E: Phone  F: Age  G: Smoker  H: Coverage Amount  I: Message
+
+Step 2: Create the Apps Script
+- In your Google Sheet, click Extensions → Apps Script
+- Delete any existing code and paste this:
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    data.timestamp || new Date().toISOString(),
+    data.form || '',
+    data.name || '',
+    data.email || '',
+    data.phone || '',
+    data.age || '',
+    data.smoker || '',
+    data.coverageAmount || '',
+    data.message || ''
+  ]);
+  return ContentService.createTextOutput('OK');
+}
+
+- Click Save (name it "Sheet Logger")
+
+Step 3: Deploy as Web App
+- Click Deploy → New Deployment
+- Type: Web App
+- Execute as: Me
+- Who has access: Anyone
+- Click Deploy → Authorize → Allow
+- Copy the Web App URL (looks like: https://script.google.com/macros/s/XXXXX/exec)
+
+Step 4: Add URL to your environment variables
+- Open your .env.local file
+- Set: VITE_GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/XXXXX/exec
+
+Step 5: Test it
+- Submit a test quote form on your site
+- Check your Google Sheet — a new row should appear within seconds

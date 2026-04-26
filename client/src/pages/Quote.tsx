@@ -19,6 +19,7 @@ import {
   EMAILJS_PUBLIC_KEY,
   CALENDLY_URL,
 } from "@/lib/emailjs-config";
+import { logToSheet } from "@/lib/sheet-logger";
 
 // ── Quote Estimate Logic ──
 const BASE_RATES: Record<string, Record<string, number>> = {
@@ -153,6 +154,18 @@ export default function Quote() {
         };
 
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_QUOTE_TEMPLATE_ID, templateParams);
+
+        // Fire-and-forget: log prospect to Google Sheet
+        logToSheet({
+          form: 'quote',
+          name: `${form.firstName} ${form.lastName}`,
+          email: form.email,
+          phone: form.phone || '',
+          age: getAge().toString(),
+          smoker: form.tobacco === 'yes' ? 'Yes' : 'No',
+          coverageAmount: `$${(coverageK * 1000).toLocaleString('en-CA')} CAD`,
+        });
+
         setEmailStatus("sent");
       } catch (err: unknown) {
         console.error("[EmailJS] Quote notification failed:", err);

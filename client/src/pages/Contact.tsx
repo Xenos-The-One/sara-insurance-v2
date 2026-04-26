@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
 import { EMAILJS_SERVICE_ID, EMAILJS_CONTACT_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from "@/lib/emailjs-config";
+import { logToSheet } from "@/lib/sheet-logger";
 
 type SubmitState = "idle" | "sending" | "success" | "error";
 
@@ -52,6 +53,15 @@ export default function Contact() {
       };
 
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CONTACT_TEMPLATE_ID, templateParams);
+
+      // Fire-and-forget: log prospect to Google Sheet
+      logToSheet({
+        form: 'contact',
+        name: form.name,
+        email: form.email,
+        phone: form.phone || '',
+        message: form.message,
+      });
 
       setSubmitState("success");
     } catch (err: unknown) {
