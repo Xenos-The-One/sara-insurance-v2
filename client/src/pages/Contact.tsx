@@ -17,6 +17,8 @@ type SubmitState = "idle" | "sending" | "success" | "error";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [caslConsent, setCaslConsent] = useState(false);
+  const [caslError, setCaslError] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -27,6 +29,12 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // CASL validation
+    if (!caslConsent) {
+      setCaslError(true);
+      return;
+    }
+    setCaslError(false);
     setSubmitState("sending");
     setErrorMsg("");
 
@@ -39,6 +47,7 @@ export default function Contact() {
         phone:        form.phone || "Not provided",
         subject:      form.subject,
         message:      form.message,
+        casl_consent: "Yes — consented at time of submission",
         submitted_at: new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" }),
       };
 
@@ -150,7 +159,7 @@ export default function Contact() {
                         Book a Free Call
                       </Link>
                       <button
-                        onClick={() => { setSubmitState("idle"); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); }}
+                        onClick={() => { setSubmitState("idle"); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); setCaslConsent(false); setCaslError(false); }}
                         className="btn-navy justify-center"
                       >
                         Send Another Message
@@ -231,6 +240,25 @@ export default function Contact() {
                         disabled={submitState === "sending"}
                       />
                     </div>
+                    {/* ── CASL Consent Checkbox ── */}
+                    <div>
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={caslConsent}
+                          onChange={e => { setCaslConsent(e.target.checked); if (e.target.checked) setCaslError(false); }}
+                          disabled={submitState === "sending"}
+                          className="mt-1 w-4 h-4 rounded border-gray-300 text-[#1a365d] accent-[#1a365d] flex-shrink-0"
+                        />
+                        <span className="text-xs text-gray-600 leading-relaxed">
+                          I consent to being contacted by Sara Siblini regarding life insurance information and to receive electronic communications related to my inquiry. I understand I may withdraw consent at any time.
+                        </span>
+                      </label>
+                      {caslError && (
+                        <p className="text-red-600 text-xs mt-1.5 ml-7">Please check this box to continue.</p>
+                      )}
+                    </div>
+
                     <button
                       type="submit"
                       disabled={submitState === "sending"}

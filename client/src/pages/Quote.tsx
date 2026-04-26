@@ -87,6 +87,8 @@ export default function Quote() {
   const [estimate, setEstimate] = useState<{ low: number; high: number } | null>(null);
   const [emailStatus, setEmailStatus] = useState<"pending" | "sent" | "failed">("pending");
   const [emailError, setEmailError] = useState("");
+  const [caslConsent, setCaslConsent] = useState(false);
+  const [caslError, setCaslError] = useState(false);
 
   const update = (field: keyof FormData, value: string | number) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -102,6 +104,12 @@ export default function Quote() {
   };
 
   const handleSubmit = () => {
+    // CASL validation
+    if (!caslConsent) {
+      setCaslError(true);
+      return;
+    }
+    setCaslError(false);
     const age = getAge();
     const coverageK = form.coverageAmount === -1
       ? (parseInt(form.customAmount) || 250)
@@ -140,6 +148,7 @@ export default function Quote() {
           term_length:     form.coverageType === "Term Life" ? `${form.termLength} years` : "N/A",
           estimate_low:    `$${estimate.low}`,
           estimate_high:   `$${estimate.high}`,
+          casl_consent:    "Yes — consented at time of submission",
           submitted_at:    new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" }),
         };
 
@@ -349,6 +358,26 @@ export default function Quote() {
                     </div>
                   )}
 
+                  {/* ── CASL Consent Checkbox (Step 3 only) ── */}
+                  {step === 3 && (
+                    <div className="mt-6">
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={caslConsent}
+                          onChange={e => { setCaslConsent(e.target.checked); if (e.target.checked) setCaslError(false); }}
+                          className="mt-1 w-4 h-4 rounded border-gray-300 accent-[#1a365d] flex-shrink-0"
+                        />
+                        <span className="text-xs text-gray-600 leading-relaxed">
+                          I consent to being contacted by Sara Siblini regarding life insurance information and to receive electronic communications related to my inquiry. I understand I may withdraw consent at any time.
+                        </span>
+                      </label>
+                      {caslError && (
+                        <p className="text-red-600 text-xs mt-1.5 ml-7">Please check this box to continue.</p>
+                      )}
+                    </div>
+                  )}
+
                   {/* Navigation */}
                   <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
                     {step > 1 ? (
@@ -443,7 +472,7 @@ export default function Quote() {
                     Book a Free Call
                   </a>
                   <button
-                    onClick={() => { setSubmitted(false); setStep(1); setForm(INITIAL); setEstimate(null); setEmailStatus("pending"); }}
+                        onClick={() => { setSubmitted(false); setStep(1); setForm(INITIAL); setEstimate(null); setEmailStatus("pending"); setCaslConsent(false); setCaslError(false); }}
                     className="w-full py-3 text-sm text-gray-500 hover:text-[#1a365d] transition-colors"
                   >
                     Start Over
