@@ -1,0 +1,47 @@
+SARA SIBLINI INSURANCE WEBSITE — GO-LIVE CHECKLIST
+====================================================
+
+STEP 1 — Fill in your personal info (edit directly in the code or ask Manus)
+  [ ] Add your phone number (search for [SARA TO FILL IN — business phone number])
+  [ ] Add your email address (search for [SARA TO FILL IN — business email address])
+  [ ] Add your professional headshot photo (see README.txt Section 2)
+  [ ] Write your personal biography paragraph (About page)
+  [ ] Add real client testimonials when you have them (with written consent)
+  [ ] Set the Privacy Policy and Terms "Last updated" date
+
+STEP 2 — Set up EmailJS (free at emailjs.com)
+  [ ] Create EmailJS account
+  [ ] Add Gmail as your email service
+  [ ] Create template for contact form submissions
+  [ ] Create template for quote form submissions
+  [ ] Get your Service ID, Template IDs, and Public Key
+  [ ] Add to .env.local: VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_CONTACT_TEMPLATE_ID, VITE_EMAILJS_QUOTE_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+  [ ] Test: submit a contact form → confirm you receive an email
+
+STEP 3 — Set up Calendly (free at calendly.com)
+  [ ] Confirm your Calendly account is active
+  [ ] Create event: "Free Financial Needs Analysis — 30 min"
+  [ ] Set your available hours
+  [ ] Copy your booking URL
+  [ ] Add to .env.local: VITE_CALENDLY_URL=https://calendly.com/YOUR_USERNAME/30min
+  [ ] Test: visit /book → confirm calendar loads and you can select a time
+
+STEP 4 — Set up Google Sheets (follow GOOGLE-SHEETS-SETUP.txt)
+  [ ] Create Google Sheet with correct column headers
+  [ ] Create and deploy the Apps Script Web App
+  [ ] Add to .env.local: VITE_GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/...
+  [ ] Test: submit a quote form → confirm a row appears in your sheet
+
+STEP 5 — Final review
+  [ ] Fill out your own quote form as a test prospect — does everything work end to end?
+  [ ] Book a test call on /book — does Calendly show your real availability?
+  [ ] Check your email — did you receive both the EmailJS notification?
+  [ ] Check your Google Sheet — is there a row for your test submission?
+  [ ] Read your Privacy Policy and Terms of Service — do they accurately describe your site?
+  [ ] Check the footer on every page — does your compliance line appear?
+
+STEP 6 — Go live
+  [ ] Deploy to Manus hosting (click Publish) OR Vercel/Netlify (see README.txt)
+  [ ] Set up your custom domain (if you have one)
+  [ ] Submit to Google Search Console
+  [ ] Set up Google My Business listing for Sara Siblini Insurance
