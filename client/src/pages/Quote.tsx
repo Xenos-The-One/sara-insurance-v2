@@ -13,7 +13,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
-import { EMAILJS_CONFIG, isEmailJSConfigured } from "@/lib/emailjs-config";
+import {
+  EMAILJS_SERVICE_ID,
+  EMAILJS_QUOTE_TEMPLATE_ID,
+  EMAILJS_PUBLIC_KEY,
+  CALENDLY_URL,
+} from "@/lib/emailjs-config";
 
 // ── Quote Estimate Logic ──
 const BASE_RATES: Record<string, Record<string, number>> = {
@@ -112,23 +117,13 @@ export default function Quote() {
     if (!submitted || !estimate) return;
 
     const sendNotification = async () => {
-      if (!isEmailJSConfigured()) {
-        console.warn(
-          "[EmailJS] Missing environment variables. Set VITE_EMAILJS_PUBLIC_KEY, " +
-          "VITE_EMAILJS_SERVICE_ID, and VITE_EMAILJS_QUOTE_TEMPLATE_ID in your .env file."
-        );
-        setEmailStatus("sent"); // Don't block UX in dev
-        return;
-      }
-
       try {
-        emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
         const coverageK = form.coverageAmount === -1
           ? (parseInt(form.customAmount) || 250)
           : form.coverageAmount;
 
-        // Template variables — these must match the variable names in your EmailJS quote template
         const templateParams = {
           first_name:      form.firstName,
           last_name:       form.lastName,
@@ -142,18 +137,13 @@ export default function Quote() {
           health:          form.health,
           coverage_type:   form.coverageType,
           coverage_amount: `$${(coverageK * 1000).toLocaleString("en-CA")} CAD`,
-          term_length:     form.coverageType === "Term" ? `${form.termLength} years` : "N/A",
+          term_length:     form.coverageType === "Term Life" ? `${form.termLength} years` : "N/A",
           estimate_low:    `$${estimate.low}`,
           estimate_high:   `$${estimate.high}`,
           submitted_at:    new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" }),
         };
 
-        await emailjs.send(
-          EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.quoteTemplateId,
-          templateParams
-        );
-
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_QUOTE_TEMPLATE_ID, templateParams);
         setEmailStatus("sent");
       } catch (err: unknown) {
         console.error("[EmailJS] Quote notification failed:", err);
@@ -387,67 +377,71 @@ export default function Quote() {
                 </div>
               </div>
             ) : (
-              /* ── RESULTS ── */
+              /* ── CONFIRMATION PANEL ── */
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
                   <CheckCircle className="w-8 h-8 text-green-500" />
                 </div>
-                <h2 className="font-['Playfair_Display'] text-2xl font-bold text-[#1a365d] mb-2">
-                  Hi {form.firstName}! Here's Your Estimate
+
+                <h2 className="font-['Playfair_Display'] text-2xl font-bold text-[#1a365d] mb-3">
+                  Thanks, {form.firstName}! Your quote request is on its way.
                 </h2>
-                <p className="text-gray-500 text-sm mb-8">Based on your age, health, and coverage selection</p>
+
+                <p className="text-gray-600 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+                  I'll review your information and reach out within 24 hours with your personalized quote. In the meantime, want to skip the wait? Book a free 30-minute Financial Needs Analysis call directly:
+                </p>
 
                 {/* EmailJS send-failure notice (non-blocking) */}
                 {emailStatus === "failed" && (
                   <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-left">
                     <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                     <p className="text-amber-700 text-sm leading-relaxed">
-                      Your estimate is ready, but we had trouble sending Sara a notification ({emailError}). Please book a call or contact Sara directly so she knows to expect you.
+                      Something went wrong. Please try again or call [SARA TO FILL IN — phone]. ({emailError})
                     </p>
                   </div>
                 )}
 
-                <div className="bg-gradient-to-br from-[#1a365d] to-[#2b6cb0] rounded-xl p-8 mb-6">
-                  <p className="text-blue-200 text-sm mb-2">Estimated Monthly Rate (CAD)</p>
-                  <p className="text-[#d69e2e] font-['Playfair_Display'] text-4xl font-bold">
-                    ${estimate?.low} – ${estimate?.high}
-                    <span className="text-xl text-blue-200 font-normal">/month</span>
-                  </p>
-                  <div className="mt-4 pt-4 border-t border-white/20 grid grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <p className="text-blue-300 text-xs">Coverage Type</p>
-                      <p className="text-white font-semibold">{form.coverageType}</p>
-                    </div>
-                    <div>
-                      <p className="text-blue-300 text-xs">Coverage Amount</p>
-                      <p className="text-white font-semibold">
-                        ${form.coverageAmount === -1 ? parseInt(form.customAmount || "0").toLocaleString("en-CA") : (form.coverageAmount * 1000).toLocaleString("en-CA")} CAD
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-blue-300 text-xs">Health Rating</p>
-                      <p className="text-white font-semibold">{form.health}</p>
+                {/* Estimate summary card */}
+                {estimate && (
+                  <div className="bg-gradient-to-br from-[#1a365d] to-[#2b6cb0] rounded-xl p-6 mb-6 text-left">
+                    <p className="text-blue-200 text-xs mb-1">Your Estimated Monthly Rate (CAD)</p>
+                    <p className="text-[#d69e2e] font-['Playfair_Display'] text-3xl font-bold mb-4">
+                      ${estimate.low} – ${estimate.high}
+                      <span className="text-lg text-blue-200 font-normal">/month</span>
+                    </p>
+                    <div className="grid grid-cols-3 gap-3 text-sm border-t border-white/20 pt-4">
+                      <div>
+                        <p className="text-blue-300 text-xs">Coverage Type</p>
+                        <p className="text-white font-semibold text-xs">{form.coverageType}</p>
+                      </div>
+                      <div>
+                        <p className="text-blue-300 text-xs">Coverage Amount</p>
+                        <p className="text-white font-semibold text-xs">
+                          ${form.coverageAmount === -1 ? parseInt(form.customAmount || "0").toLocaleString("en-CA") : (form.coverageAmount * 1000).toLocaleString("en-CA")} CAD
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-blue-300 text-xs">Health Rating</p>
+                        <p className="text-white font-semibold text-xs">{form.health}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                {/* Confirmation note */}
-                {emailStatus === "sent" && (
-                  <p className="text-xs text-green-600 mb-4 flex items-center justify-center gap-1">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    Sara has been notified and will follow up with you shortly.
-                  </p>
                 )}
 
-                <p className="text-xs text-gray-400 mb-8 leading-relaxed">
-                  ⚠️ This estimate is for illustrative purposes only and does not constitute a binding quote or offer of insurance. Actual rates are subject to full underwriting by Primerica Life Insurance Company of Canada and may differ. All amounts shown are in Canadian dollars (CAD). Final pricing confirmed on your consultation call.
+                <p className="text-xs text-gray-400 mb-6 leading-relaxed">
+                  ⚠️ This estimate is for illustrative purposes only and does not constitute a binding quote or offer of insurance. Actual rates are subject to full underwriting by Primerica Life Insurance Company of Canada and may differ. All amounts shown are in Canadian dollars (CAD).
                 </p>
 
                 <div className="space-y-3">
-                  <Link href="/book" className="btn-gold w-full justify-center text-base py-3.5">
-                    <Calendar className="w-5 h-5" />
-                    Book Your Free Consultation Call
-                  </Link>
+                  <a
+                    href={CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-gold w-full justify-center text-base py-3.5 inline-flex items-center"
+                  >
+                    <Calendar className="w-5 h-5 mr-2" />
+                    Book a Free Call
+                  </a>
                   <button
                     onClick={() => { setSubmitted(false); setStep(1); setForm(INITIAL); setEstimate(null); setEmailStatus("pending"); }}
                     className="w-full py-3 text-sm text-gray-500 hover:text-[#1a365d] transition-colors"
@@ -455,6 +449,10 @@ export default function Quote() {
                     Start Over
                   </button>
                 </div>
+
+                <p className="text-xs text-gray-400 mt-6 leading-relaxed">
+                  Sara Siblini | Licensed Life Insurance Representative | Primerica Life Insurance Company of Canada | FSRA Lic. #NUV56
+                </p>
               </div>
             )}
 

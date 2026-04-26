@@ -3,28 +3,16 @@
    Credentials are read from Vite environment variables.
    Set these in a .env file at the project root (never commit it).
 
-   Required env vars:
-     VITE_EMAILJS_PUBLIC_KEY      — Your EmailJS Public Key (Account > API Keys)
-     VITE_EMAILJS_SERVICE_ID      — Your EmailJS Service ID
-     VITE_EMAILJS_CONTACT_TEMPLATE_ID  — Template ID for the Contact form
-     VITE_EMAILJS_QUOTE_TEMPLATE_ID    — Template ID for the Quote form
-
-   See .env.example for the exact variable names.
+   Required env vars (see .env.example):
+     VITE_EMAILJS_SERVICE_ID
+     VITE_EMAILJS_CONTACT_TEMPLATE_ID
+     VITE_EMAILJS_QUOTE_TEMPLATE_ID
+     VITE_EMAILJS_PUBLIC_KEY
+     VITE_CALENDLY_URL
    ============================================================= */
 
-export const EMAILJS_CONFIG = {
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string,
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID as string,
-  contactTemplateId: import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID as string,
-  quoteTemplateId: import.meta.env.VITE_EMAILJS_QUOTE_TEMPLATE_ID as string,
-} as const;
-
-/** Returns true only when all four required env vars are present at runtime. */
-export function isEmailJSConfigured(): boolean {
-  return !!(
-    EMAILJS_CONFIG.publicKey &&
-    EMAILJS_CONFIG.serviceId &&
-    EMAILJS_CONFIG.contactTemplateId &&
-    EMAILJS_CONFIG.quoteTemplateId
-  );
-}
+export const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
+export const EMAILJS_CONTACT_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID || 'YOUR_CONTACT_TEMPLATE_ID';
+export const EMAILJS_QUOTE_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_QUOTE_TEMPLATE_ID || 'YOUR_QUOTE_TEMPLATE_ID';
+export const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
+export const CALENDLY_URL = import.meta.env.VITE_CALENDLY_URL || '[SARA TO FILL IN — Calendly URL]';

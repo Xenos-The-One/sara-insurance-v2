@@ -11,7 +11,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
-import { EMAILJS_CONFIG, isEmailJSConfigured } from "@/lib/emailjs-config";
+import { EMAILJS_SERVICE_ID, EMAILJS_CONTACT_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from "@/lib/emailjs-config";
 
 type SubmitState = "idle" | "sending" | "success" | "error";
 
@@ -22,27 +22,17 @@ export default function Contact() {
 
   const update = (field: string, value: string) => setForm(prev => ({ ...prev, [field]: value }));
 
+  // Extract first name from full name for the success message
+  const firstName = form.name.trim().split(" ")[0] || "there";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitState("sending");
     setErrorMsg("");
 
-    // If EmailJS is not yet configured (env vars missing), show a clear dev warning
-    if (!isEmailJSConfigured()) {
-      console.warn(
-        "[EmailJS] Missing environment variables. Set VITE_EMAILJS_PUBLIC_KEY, " +
-        "VITE_EMAILJS_SERVICE_ID, and VITE_EMAILJS_CONTACT_TEMPLATE_ID in your .env file."
-      );
-      // Still show success to the visitor so UX is not broken during development
-      setSubmitState("success");
-      return;
-    }
-
     try {
-      // Initialize EmailJS with the public key
-      emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-      // Template variables — these must match the variable names in your EmailJS template
       const templateParams = {
         from_name:    form.name,
         from_email:   form.email,
@@ -52,20 +42,14 @@ export default function Contact() {
         submitted_at: new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" }),
       };
 
-      await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.contactTemplateId,
-        templateParams
-      );
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CONTACT_TEMPLATE_ID, templateParams);
 
       setSubmitState("success");
-      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (err: unknown) {
       console.error("[EmailJS] Contact form send failed:", err);
       const message = err instanceof Error ? err.message : "Unknown error";
       setErrorMsg(
-        "Sorry, your message could not be sent at this time. Please try again or email Sara directly. " +
-        `(${message})`
+        `Something went wrong sending your message. Please email [SARA TO FILL IN — email] directly or try again. (${message})`
       );
       setSubmitState("error");
     }
@@ -155,18 +139,18 @@ export default function Contact() {
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="w-8 h-8 text-green-500" />
                     </div>
-                    <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-2">
+                    <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-3">
                       Message Sent!
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                      Thanks for reaching out! Sara will review your message and get back to you within 1 business day.
+                    <p className="text-gray-700 text-sm leading-relaxed mb-6">
+                      Thank you, {firstName}! I've received your message and will be in touch within 24 hours. — Sara Siblini
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <Link href="/book" className="btn-gold justify-center">
                         Book a Free Call
                       </Link>
                       <button
-                        onClick={() => setSubmitState("idle")}
+                        onClick={() => { setSubmitState("idle"); setForm({ name: "", email: "", phone: "", subject: "", message: "" }); }}
                         className="btn-navy justify-center"
                       >
                         Send Another Message
@@ -253,7 +237,7 @@ export default function Contact() {
                       className="btn-gold w-full justify-center text-base py-3.5 disabled:opacity-60"
                     >
                       {submitState === "sending" ? (
-                        <><span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Sending...</>
+                        <><span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2" /> Sending...</>
                       ) : (
                         <><Send className="w-5 h-5" /> Send Message</>
                       )}
