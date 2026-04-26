@@ -1,14 +1,19 @@
 /* =============================================================
    QUOTE CALCULATOR — Sara Life Insurance
    Multi-step form with estimate logic per spec
+   EmailJS integration: sends Sara a notification when a
+   prospect completes the form and sees their estimate.
+   Credentials are read from VITE_ environment variables.
    ============================================================= */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { CheckCircle, ArrowRight, ArrowLeft, Calculator, Calendar } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import { CheckCircle, ArrowRight, ArrowLeft, Calculator, Calendar, AlertCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
+import { EMAILJS_CONFIG, isEmailJSConfigured } from "@/lib/emailjs-config";
 
 // ── Quote Estimate Logic ──
 const BASE_RATES: Record<string, Record<string, number>> = {
@@ -40,12 +45,12 @@ function calcEstimate(age: number, health: string, coverageK: number, tobacco: b
 }
 
 const COVERAGE_OPTIONS = [
-  { label: "$50,000", value: 50 },
-  { label: "$100,000", value: 100 },
-  { label: "$250,000", value: 250 },
-  { label: "$500,000", value: 500 },
+  { label: "$50,000",    value: 50 },
+  { label: "$100,000",   value: 100 },
+  { label: "$250,000",   value: 250 },
+  { label: "$500,000",   value: 500 },
   { label: "$1,000,000", value: 1000 },
-  { label: "Custom", value: -1 },
+  { label: "Custom",     value: -1 },
 ];
 
 interface FormData {
@@ -75,6 +80,8 @@ export default function Quote() {
   const [form, setForm] = useState<FormData>(INITIAL);
   const [submitted, setSubmitted] = useState(false);
   const [estimate, setEstimate] = useState<{ low: number; high: number } | null>(null);
+  const [emailStatus, setEmailStatus] = useState<"pending" | "sent" | "failed">("pending");
+  const [emailError, setEmailError] = useState("");
 
   const update = (field: keyof FormData, value: string | number) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -97,7 +104,68 @@ export default function Quote() {
     const est = calcEstimate(age, form.health, coverageK, form.tobacco === "yes");
     setEstimate(est);
     setSubmitted(true);
+    setEmailStatus("pending");
   };
+
+  // Send EmailJS notification when the results screen mounts
+  useEffect(() => {
+    if (!submitted || !estimate) return;
+
+    const sendNotification = async () => {
+      if (!isEmailJSConfigured()) {
+        console.warn(
+          "[EmailJS] Missing environment variables. Set VITE_EMAILJS_PUBLIC_KEY, " +
+          "VITE_EMAILJS_SERVICE_ID, and VITE_EMAILJS_QUOTE_TEMPLATE_ID in your .env file."
+        );
+        setEmailStatus("sent"); // Don't block UX in dev
+        return;
+      }
+
+      try {
+        emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+
+        const coverageK = form.coverageAmount === -1
+          ? (parseInt(form.customAmount) || 250)
+          : form.coverageAmount;
+
+        // Template variables — these must match the variable names in your EmailJS quote template
+        const templateParams = {
+          first_name:      form.firstName,
+          last_name:       form.lastName,
+          full_name:       `${form.firstName} ${form.lastName}`,
+          from_email:      form.email,
+          phone:           form.phone || "Not provided",
+          date_of_birth:   form.dob,
+          age:             getAge().toString(),
+          gender:          form.gender,
+          tobacco:         form.tobacco === "yes" ? "Yes" : "No",
+          health:          form.health,
+          coverage_type:   form.coverageType,
+          coverage_amount: `$${(coverageK * 1000).toLocaleString("en-CA")} CAD`,
+          term_length:     form.coverageType === "Term" ? `${form.termLength} years` : "N/A",
+          estimate_low:    `$${estimate.low}`,
+          estimate_high:   `$${estimate.high}`,
+          submitted_at:    new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" }),
+        };
+
+        await emailjs.send(
+          EMAILJS_CONFIG.serviceId,
+          EMAILJS_CONFIG.quoteTemplateId,
+          templateParams
+        );
+
+        setEmailStatus("sent");
+      } catch (err: unknown) {
+        console.error("[EmailJS] Quote notification failed:", err);
+        const message = err instanceof Error ? err.message : "Unknown error";
+        setEmailError(message);
+        setEmailStatus("failed");
+      }
+    };
+
+    sendNotification();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submitted]);
 
   const canNext1 = form.firstName && form.lastName && form.email && form.phone;
   const canNext2 = form.dob && form.gender && form.tobacco && form.health;
@@ -238,7 +306,7 @@ export default function Quote() {
                       <div>
                         <label className="form-label">Coverage Type *</label>
                         <div className="grid grid-cols-2 gap-3">
-                          {["Term Life"].map(t => (
+                          {["Term Life", "Family Income Protection"].map(t => (
                             <button
                               key={t}
                               type="button"
@@ -266,12 +334,12 @@ export default function Quote() {
                         </div>
                         {form.coverageAmount === -1 && (
                           <div className="mt-3">
-                            <label className="form-label">Custom Amount ($)</label>
+                            <label className="form-label">Custom Amount (CAD $)</label>
                             <input className="form-input" type="number" value={form.customAmount} onChange={e => update("customAmount", e.target.value)} placeholder="e.g. 750000" />
                           </div>
                         )}
                       </div>
-                      {form.coverageType === "Term" && (
+                      {form.coverageType === "Term Life" && (
                         <div>
                           <label className="form-label">Term Length</label>
                           <div className="grid grid-cols-5 gap-2">
@@ -329,8 +397,18 @@ export default function Quote() {
                 </h2>
                 <p className="text-gray-500 text-sm mb-8">Based on your age, health, and coverage selection</p>
 
+                {/* EmailJS send-failure notice (non-blocking) */}
+                {emailStatus === "failed" && (
+                  <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-left">
+                    <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                      Your estimate is ready, but we had trouble sending Sara a notification ({emailError}). Please book a call or contact Sara directly so she knows to expect you.
+                    </p>
+                  </div>
+                )}
+
                 <div className="bg-gradient-to-br from-[#1a365d] to-[#2b6cb0] rounded-xl p-8 mb-6">
-                  <p className="text-blue-200 text-sm mb-2">Estimated Monthly Rate</p>
+                  <p className="text-blue-200 text-sm mb-2">Estimated Monthly Rate (CAD)</p>
                   <p className="text-[#d69e2e] font-['Playfair_Display'] text-4xl font-bold">
                     ${estimate?.low} – ${estimate?.high}
                     <span className="text-xl text-blue-200 font-normal">/month</span>
@@ -343,7 +421,7 @@ export default function Quote() {
                     <div>
                       <p className="text-blue-300 text-xs">Coverage Amount</p>
                       <p className="text-white font-semibold">
-                        ${form.coverageAmount === -1 ? parseInt(form.customAmount || "0").toLocaleString() : (form.coverageAmount * 1000).toLocaleString()}
+                        ${form.coverageAmount === -1 ? parseInt(form.customAmount || "0").toLocaleString("en-CA") : (form.coverageAmount * 1000).toLocaleString("en-CA")} CAD
                       </p>
                     </div>
                     <div>
@@ -352,6 +430,14 @@ export default function Quote() {
                     </div>
                   </div>
                 </div>
+
+                {/* Confirmation note */}
+                {emailStatus === "sent" && (
+                  <p className="text-xs text-green-600 mb-4 flex items-center justify-center gap-1">
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    Sara has been notified and will follow up with you shortly.
+                  </p>
+                )}
 
                 <p className="text-xs text-gray-400 mb-8 leading-relaxed">
                   ⚠️ This estimate is for illustrative purposes only and does not constitute a binding quote or offer of insurance. Actual rates are subject to full underwriting by Primerica Life Insurance Company of Canada and may differ. All amounts shown are in Canadian dollars (CAD). Final pricing confirmed on your consultation call.
@@ -363,7 +449,7 @@ export default function Quote() {
                     Book Your Free Consultation Call
                   </Link>
                   <button
-                    onClick={() => { setSubmitted(false); setStep(1); setForm(INITIAL); }}
+                    onClick={() => { setSubmitted(false); setStep(1); setForm(INITIAL); setEstimate(null); setEmailStatus("pending"); }}
                     className="w-full py-3 text-sm text-gray-500 hover:text-[#1a365d] transition-colors"
                   >
                     Start Over

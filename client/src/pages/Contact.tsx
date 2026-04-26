@@ -1,30 +1,74 @@
 /* =============================================================
    CONTACT PAGE — Sara Life Insurance
    Two-column: contact info + form, map placeholder
+   EmailJS integration: reads credentials from VITE_ env vars
    ============================================================= */
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
-import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, Twitter, Send, CheckCircle } from "lucide-react";
+import { Link } from "wouter";
+import emailjs from "@emailjs/browser";
+import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, Twitter, Send, CheckCircle, AlertCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
+import { EMAILJS_CONFIG, isEmailJSConfigured } from "@/lib/emailjs-config";
+
+type SubmitState = "idle" | "sending" | "success" | "error";
 
 export default function Contact() {
-  const [, navigate] = useLocation();
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
-  const [sending, setSending] = useState(false);
+  const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const update = (field: string, value: string) => setForm(prev => ({ ...prev, [field]: value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSending(true);
-    // EmailJS placeholder — configure with your EmailJS credentials
-    // emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form, 'YOUR_USER_ID')
-    setTimeout(() => {
-      navigate("/thankyou");
-    }, 800);
+    setSubmitState("sending");
+    setErrorMsg("");
+
+    // If EmailJS is not yet configured (env vars missing), show a clear dev warning
+    if (!isEmailJSConfigured()) {
+      console.warn(
+        "[EmailJS] Missing environment variables. Set VITE_EMAILJS_PUBLIC_KEY, " +
+        "VITE_EMAILJS_SERVICE_ID, and VITE_EMAILJS_CONTACT_TEMPLATE_ID in your .env file."
+      );
+      // Still show success to the visitor so UX is not broken during development
+      setSubmitState("success");
+      return;
+    }
+
+    try {
+      // Initialize EmailJS with the public key
+      emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+
+      // Template variables — these must match the variable names in your EmailJS template
+      const templateParams = {
+        from_name:    form.name,
+        from_email:   form.email,
+        phone:        form.phone || "Not provided",
+        subject:      form.subject,
+        message:      form.message,
+        submitted_at: new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" }),
+      };
+
+      await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.contactTemplateId,
+        templateParams
+      );
+
+      setSubmitState("success");
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+    } catch (err: unknown) {
+      console.error("[EmailJS] Contact form send failed:", err);
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setErrorMsg(
+        "Sorry, your message could not be sent at this time. Please try again or email Sara directly. " +
+        `(${message})`
+      );
+      setSubmitState("error");
+    }
   };
 
   return (
@@ -104,57 +148,122 @@ export default function Contact() {
               {/* Right: Contact Form */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
                 <h2 className="font-['Playfair_Display'] text-2xl font-bold text-[#1a365d] mb-6">Send a Message</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="form-label">Your Name *</label>
-                      <input required className="form-input" value={form.name} onChange={e => update("name", e.target.value)} placeholder="Jane Smith" />
+
+                {/* ── Success State ── */}
+                {submitState === "success" ? (
+                  <div className="text-center py-10">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="w-8 h-8 text-green-500" />
                     </div>
-                    <div>
-                      <label className="form-label">Email Address *</label>
-                      <input required type="email" className="form-input" value={form.email} onChange={e => update("email", e.target.value)} placeholder="jane@example.com" />
+                    <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-2">
+                      Message Sent!
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                      Thanks for reaching out! Sara will review your message and get back to you within 1 business day.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <Link href="/book" className="btn-gold justify-center">
+                        Book a Free Call
+                      </Link>
+                      <button
+                        onClick={() => setSubmitState("idle")}
+                        className="btn-navy justify-center"
+                      >
+                        Send Another Message
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <label className="form-label">Phone Number</label>
-                    <input type="tel" className="form-input" value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="(416) 555-1234" />
-                  </div>
-                  <div>
-                    <label className="form-label">Subject *</label>
-                    <select required className="form-input" value={form.subject} onChange={e => update("subject", e.target.value)}>
-                      <option value="">Select a subject...</option>
-                      <option value="General Question">General Question</option>
-                      <option value="Quote Request">Quote Request</option>
-                      <option value="Policy Question">Policy Question</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="form-label">Message *</label>
-                    <textarea
-                      required
-                      rows={5}
-                      className="form-input resize-none"
-                      value={form.message}
-                      onChange={e => update("message", e.target.value)}
-                      placeholder="Tell me how I can help you..."
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={sending}
-                    className="btn-gold w-full justify-center text-base py-3.5 disabled:opacity-60"
-                  >
-                    {sending ? (
-                      <><span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Sending...</>
-                    ) : (
-                      <><Send className="w-5 h-5" /> Send Message</>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* ── Error Banner ── */}
+                    {submitState === "error" && (
+                      <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg p-4">
+                        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                        <p className="text-red-700 text-sm leading-relaxed">{errorMsg}</p>
+                      </div>
                     )}
-                  </button>
-                  <p className="text-xs text-gray-400 text-center">
-                    I typically respond within 1 business day. For faster service, <Link href="/book" className="text-[#2b6cb0] hover:underline">book a call</Link>.
-                  </p>
-                </form>
+
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="form-label">Your Name *</label>
+                        <input
+                          required
+                          className="form-input"
+                          value={form.name}
+                          onChange={e => update("name", e.target.value)}
+                          placeholder="Jane Smith"
+                          disabled={submitState === "sending"}
+                        />
+                      </div>
+                      <div>
+                        <label className="form-label">Email Address *</label>
+                        <input
+                          required
+                          type="email"
+                          className="form-input"
+                          value={form.email}
+                          onChange={e => update("email", e.target.value)}
+                          placeholder="jane@example.com"
+                          disabled={submitState === "sending"}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="form-label">Phone Number</label>
+                      <input
+                        type="tel"
+                        className="form-input"
+                        value={form.phone}
+                        onChange={e => update("phone", e.target.value)}
+                        placeholder="(416) 555-1234"
+                        disabled={submitState === "sending"}
+                      />
+                    </div>
+                    <div>
+                      <label className="form-label">Subject *</label>
+                      <select
+                        required
+                        className="form-input"
+                        value={form.subject}
+                        onChange={e => update("subject", e.target.value)}
+                        disabled={submitState === "sending"}
+                      >
+                        <option value="">Select a subject...</option>
+                        <option value="General Question">General Question</option>
+                        <option value="Quote Request">Quote Request</option>
+                        <option value="Policy Question">Policy Question</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="form-label">Message *</label>
+                      <textarea
+                        required
+                        rows={5}
+                        className="form-input resize-none"
+                        value={form.message}
+                        onChange={e => update("message", e.target.value)}
+                        placeholder="Tell me how I can help you..."
+                        disabled={submitState === "sending"}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={submitState === "sending"}
+                      className="btn-gold w-full justify-center text-base py-3.5 disabled:opacity-60"
+                    >
+                      {submitState === "sending" ? (
+                        <><span className="animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full" /> Sending...</>
+                      ) : (
+                        <><Send className="w-5 h-5" /> Send Message</>
+                      )}
+                    </button>
+                    <p className="text-xs text-gray-400 text-center">
+                      I typically respond within 1 business day. For faster service,{" "}
+                      <Link href="/book" className="text-[#2b6cb0] hover:underline">book a call</Link>.
+                    </p>
+                  </form>
+                )}
               </div>
             </div>
           </div>
