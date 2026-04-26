@@ -1,22 +1,69 @@
 /* =============================================================
    BOOK A CALL PAGE — Sara Life Insurance
-   Calendly embed placeholder, how-to-book steps, benefits
+   Inline Calendly embed via VITE_CALENDLY_URL env var.
+   Falls back to a "Set Up Calendly" prompt if the URL is
+   not yet configured.
    ============================================================= */
+import { useEffect } from "react";
 import { Link } from "wouter";
-import { Calendar, MessageSquare, Video, CheckCircle, Clock, DollarSign, Shield } from "lucide-react";
+import { Calendar, MessageSquare, Video, CheckCircle, Clock, DollarSign, Shield, ExternalLink } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
+import { CALENDLY_URL } from "@/lib/emailjs-config";
+
+// Calendly widget type declaration (loaded via CDN in index.html)
+declare global {
+  interface Window {
+    Calendly?: {
+      initInlineWidget: (opts: {
+        url: string;
+        parentElement: HTMLElement;
+        prefill?: Record<string, unknown>;
+        utm?: Record<string, unknown>;
+      }) => void;
+    };
+  }
+}
+
+const CALENDLY_CONFIGURED =
+  CALENDLY_URL &&
+  CALENDLY_URL !== "[SARA TO FILL IN — Calendly URL]" &&
+  CALENDLY_URL.startsWith("https://calendly.com/");
 
 export default function Book() {
+  useEffect(() => {
+    if (!CALENDLY_CONFIGURED) return;
+
+    const container = document.getElementById("calendly-embed");
+    if (!container) return;
+
+    // Clear any previous content
+    container.innerHTML = "";
+
+    const tryInit = () => {
+      if (window.Calendly) {
+        window.Calendly.initInlineWidget({
+          url: CALENDLY_URL,
+          parentElement: container,
+        });
+      } else {
+        // Widget script not yet loaded — retry after a short delay
+        setTimeout(tryInit, 300);
+      }
+    };
+
+    tryInit();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="pt-16 lg:pt-20">
         <PageHeader
           title="Book Your Free Consultation"
-          subtitle="Choose a time that works for you. Your 20–30 minute Zoom call with Sara is completely free and no-obligation."
+          subtitle="Choose a time that works for you. Your free 30-minute Financial Needs Analysis call with Sara is completely no-obligation."
           breadcrumbs={[{ label: "Book a Call" }]}
         />
 
@@ -30,9 +77,24 @@ export default function Book() {
             </div>
             <div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
               {[
-                { step: "1", icon: Calendar, title: "Choose a Time", desc: "Pick a date and time that works for your schedule using the calendar below." },
-                { step: "2", icon: MessageSquare, title: "Answer a Few Questions", desc: "The booking form will ask about your budget, health, and goals so Sara can tailor the call to you." },
-                { step: "3", icon: Video, title: "Meet on Zoom", desc: "You'll receive a Zoom link by email. Join from your phone, tablet, or computer — no downloads needed." },
+                {
+                  step: "1",
+                  icon: Calendar,
+                  title: "Choose a Time",
+                  desc: "Pick a date and time that works for your schedule using the calendar below.",
+                },
+                {
+                  step: "2",
+                  icon: MessageSquare,
+                  title: "Answer a Few Questions",
+                  desc: "The booking form will ask about your coverage goals so Sara can prepare personalized options before the call.",
+                },
+                {
+                  step: "3",
+                  icon: Video,
+                  title: "Meet on Zoom",
+                  desc: "You'll receive a Zoom link by email. Join from your phone, tablet, or computer — no downloads needed.",
+                },
               ].map((s) => (
                 <div key={s.step} className="text-center">
                   <div className="relative inline-block mb-5">
@@ -57,14 +119,14 @@ export default function Book() {
             <div className="grid lg:grid-cols-3 gap-10">
               {/* Benefits */}
               <div className="lg:col-span-1">
-                <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-6">Benefits of Booking</h3>
+                <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-6">What You'll Get</h3>
                 <div className="space-y-4">
                   {[
-                    { icon: DollarSign, title: "100% Free", desc: "No cost to you, ever. Sara is compensated by Primerica Canada." },
-                    { icon: Shield, title: "No Obligation", desc: "You're under no pressure to buy anything." },
-                    { icon: Clock, title: "20–30 Minutes", desc: "Quick, focused, and respectful of your time." },
-                    { icon: Video, title: "Done on Zoom", desc: "No office visit. Meet from anywhere." },
-                    { icon: CheckCircle, title: "Clear Plan", desc: "Walk away knowing exactly what coverage you need and what it costs." },
+                    { icon: DollarSign, title: "100% Free", desc: "No cost to you, ever. Sara is compensated by Primerica Life Insurance Company of Canada." },
+                    { icon: Shield, title: "No Obligation", desc: "You're under no pressure to purchase anything." },
+                    { icon: Clock, title: "30 Minutes", desc: "A focused Financial Needs Analysis, respectful of your time." },
+                    { icon: Video, title: "Done on Zoom", desc: "No office visit required. Meet from anywhere in Ontario." },
+                    { icon: CheckCircle, title: "A Clear Picture", desc: "Walk away knowing exactly what coverage your family needs and what it costs." },
                   ].map((b) => (
                     <div key={b.title} className="flex items-start gap-3">
                       <div className="w-9 h-9 rounded-lg bg-[#1a365d] flex items-center justify-center flex-shrink-0">
@@ -79,54 +141,60 @@ export default function Book() {
                 </div>
 
                 <div className="mt-8 bg-[#1a365d] rounded-xl p-5 text-white">
-                  <h4 className="font-['Playfair_Display'] font-bold mb-2">What to Expect</h4>
+                  <h4 className="font-['Playfair_Display'] font-bold mb-2">What to Expect on the Call</h4>
                   <p className="text-blue-200 text-sm leading-relaxed">
-                    The booking form will ask about your budget, current health, and coverage goals. This helps Sara prepare personalized options before the call so you get the most out of your time together.
+                    Sara will walk you through a Financial Needs Analysis — a structured conversation about your income, dependants, debts, and goals. You'll leave with a clear understanding of how much coverage makes sense for your family and what it would cost through Primerica Canada.
                   </p>
                 </div>
+
+                <p className="text-xs text-gray-400 mt-4 leading-relaxed">
+                  Sara Siblini | Licensed Life Insurance Representative | Primerica Life Insurance Company of Canada | FSRA Lic. #NUV56 | Serving Ontario, Canada
+                </p>
               </div>
 
               {/* Calendly Embed */}
               <div className="lg:col-span-2">
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                   <div className="bg-[#1a365d] px-6 py-4">
-                    <h3 className="font-['Playfair_Display'] font-bold text-white text-lg">Schedule Your Call</h3>
+                    <h3 className="font-['Playfair_Display'] font-bold text-white text-lg">Schedule Your Free 30-Minute Call</h3>
                     <p className="text-blue-200 text-sm">All times shown in your local timezone</p>
                   </div>
-                  {/* ── CALENDLY EMBED PLACEHOLDER ── */}
-                  {/* REPLACE THIS DIV with your actual Calendly embed code:
-                      <div class="calendly-inline-widget" data-url="https://calendly.com/YOUR_USERNAME" style="min-width:320px;height:700px;"></div>
-                      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-                  */}
-                  <div
-                    id="calendly-embed"
-                    className="min-h-[500px] flex flex-col items-center justify-center p-10 text-center bg-gradient-to-br from-blue-50 to-indigo-50"
-                  >
-                    <div className="w-20 h-20 rounded-full bg-[#1a365d] flex items-center justify-center mb-5">
-                      <Calendar className="w-10 h-10 text-[#d69e2e]" />
-                    </div>
-                    <h4 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-3">
-                      Calendly Booking Widget
-                    </h4>
-                    <p className="text-gray-600 text-sm max-w-sm leading-relaxed mb-6">
-                      Replace this placeholder with your Calendly embed code. See the README for instructions on how to add your booking calendar.
-                    </p>
-                    <div className="bg-white rounded-lg border border-gray-200 p-4 text-left text-xs text-gray-500 font-mono max-w-sm w-full">
-                      {`<!-- Paste your Calendly code here -->`}<br />
-                      {`<div class="calendly-inline-widget"`}<br />
-                      {`  data-url="https://calendly.com/YOUR_USERNAME"`}<br />
-                      {`  style="min-width:320px;height:700px;">`}<br />
-                      {`</div>`}
-                    </div>
-                    <a
-                      href="https://calendly.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-gold mt-6 text-sm"
+
+                  {CALENDLY_CONFIGURED ? (
+                    /* ── LIVE EMBED — populated by useEffect ── */
+                    <div
+                      id="calendly-embed"
+                      style={{ minWidth: "320px", height: "700px" }}
+                    />
+                  ) : (
+                    /* ── PLACEHOLDER — shown until VITE_CALENDLY_URL is set ── */
+                    <div
+                      id="calendly-embed"
+                      className="min-h-[500px] flex flex-col items-center justify-center p-10 text-center bg-gradient-to-br from-blue-50 to-indigo-50"
                     >
-                      Set Up Calendly →
-                    </a>
-                  </div>
+                      <div className="w-20 h-20 rounded-full bg-[#1a365d] flex items-center justify-center mb-5">
+                        <Calendar className="w-10 h-10 text-[#d69e2e]" />
+                      </div>
+                      <h4 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-3">
+                        Calendly Booking Calendar
+                      </h4>
+                      <p className="text-gray-600 text-sm max-w-sm leading-relaxed mb-4">
+                        To activate the live booking calendar, add your Calendly URL to the <strong>VITE_CALENDLY_URL</strong> environment variable in Settings → Secrets.
+                      </p>
+                      <div className="bg-white rounded-lg border border-gray-200 p-3 text-left text-xs text-gray-500 font-mono max-w-xs w-full mb-5">
+                        VITE_CALENDLY_URL=https://calendly.com/your-username
+                      </div>
+                      <a
+                        href="https://calendly.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-gold text-sm inline-flex items-center gap-2"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Set Up Calendly
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
