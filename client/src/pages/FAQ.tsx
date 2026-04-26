@@ -1,6 +1,8 @@
 /* =============================================================
-   FAQ PAGE — Sara Life Insurance
-   Accordion-style FAQ with 10 questions
+   FAQ PAGE — Sara Siblini | Primerica Life Insurance Company of Canada
+   Canadian context: Ontario, FSRA, Primerica Canada
+   NOTE: Only term life insurance is offered. No Whole Life, Final Expense,
+         Disability, Critical Illness, or multi-carrier comparisons.
    ============================================================= */
 import { useState } from "react";
 import { Link } from "wouter";
@@ -12,44 +14,44 @@ import PageHeader from "@/components/PageHeader";
 
 const FAQS = [
   {
-    q: "How much does life insurance cost?",
-    a: "The cost of life insurance varies widely based on your age, health, the type of policy, and the coverage amount you choose. A healthy 30-year-old can get a $500,000 term life policy for as little as $18–$25 per month. Whole life and final expense policies cost more due to their permanent nature and added benefits. The best way to find out your exact rate is to get a free quote — it takes less than 2 minutes.",
+    q: "How much does term life insurance cost?",
+    a: "The cost of term life insurance varies based on your age, health, coverage amount, and term length. Rates are generally very affordable for younger, healthy applicants. The best way to find out your personalised rate is to get a free quote — it takes less than 2 minutes. All rates are in Canadian dollars (CAD) and are subject to underwriting approval by Primerica Life Insurance Company of Canada.",
   },
   {
     q: "Do I need a medical exam to get covered?",
-    a: "Not always. Many term life policies under $500,000 can be approved without a medical exam through a process called 'simplified issue' or 'accelerated underwriting.' Final expense insurance typically requires no medical exam at all — just a few health questions. Guaranteed issue policies have no health questions whatsoever. I'll help you find the right option based on your health situation.",
+    a: "Not always. Many term life policies can be approved without a full medical exam through a simplified underwriting process. Whether an exam is required depends on your age, health, and the coverage amount you're applying for. Sara will walk you through what to expect during your free consultation.",
   },
   {
     q: "How long does it take to get approved?",
-    a: "Approval times vary by policy type. No-exam policies can be approved in as little as 24–48 hours. Policies requiring a medical exam typically take 2–6 weeks for full underwriting. Final expense and guaranteed issue policies are often approved the same day. Once approved, your coverage is active immediately upon your first premium payment.",
+    a: "Approval times vary based on the underwriting process. Simplified issue policies can be approved more quickly, while policies requiring full medical underwriting may take several weeks. Once approved, your coverage is active upon your first premium payment. Sara will keep you informed throughout the process.",
   },
   {
     q: "What happens if I miss a premium payment?",
-    a: "Most life insurance policies include a 30-day grace period after a missed payment. During this time, your coverage remains active. If you don't pay within the grace period, your policy may lapse. Whole life policies with accumulated cash value may use that value to cover premiums temporarily. If your policy lapses, you may be able to reinstate it within a certain timeframe, though you may need to re-qualify medically.",
+    a: "Most life insurance policies include a grace period after a missed payment, during which your coverage remains active. If you don't pay within the grace period, your policy may lapse. If your policy lapses, you may be able to reinstate it within a certain timeframe, though you may need to re-qualify medically. Sara can help you understand your specific policy terms.",
   },
   {
     q: "Can I get life insurance if I have a pre-existing condition?",
-    a: "Yes, in most cases. Many carriers will still approve applicants with common conditions like high blood pressure, diabetes, or a history of cancer, though your premiums may be higher. For more serious conditions, guaranteed issue final expense policies are available with no health questions — making coverage accessible to nearly everyone. I work with multiple carriers and can find the best option for your specific health situation.",
+    a: "In many cases, yes. Coverage eligibility and rates for applicants with pre-existing conditions depend on the nature and severity of the condition, and are subject to underwriting review by Primerica Life Insurance Company of Canada. Sara will help you understand your options during your free consultation.",
   },
   {
-    q: "What is the difference between term and whole life insurance?",
-    a: "Term life insurance provides coverage for a specific period (10–30 years) and is the most affordable option. It pays a death benefit if you pass away during the term but has no cash value. Whole life insurance provides permanent, lifetime coverage and builds cash value over time that you can borrow against. Term is best for income replacement and debt coverage; whole life is better for estate planning and long-term wealth building.",
+    q: "What is term life insurance?",
+    a: "Term life insurance provides coverage for a specific period — typically 10, 20, or 30 years. If you pass away during the term, your beneficiaries receive a tax-free death benefit. It is the most straightforward and affordable type of life insurance, designed to replace your income and protect your family during your peak earning years. Primerica Canada specialises in term life insurance.",
   },
   {
-    q: "Is life insurance taxable?",
-    a: "In most cases, life insurance death benefits are received income-tax-free by your beneficiaries. The cash value growth in a whole life policy is also tax-deferred. However, there are some exceptions — for example, if the policy is owned by an employer or if the estate is very large. For most families, life insurance is one of the most tax-efficient financial tools available. I always recommend consulting a tax advisor for your specific situation.",
+    q: "Is the life insurance death benefit taxable in Canada?",
+    a: "In most cases, life insurance death benefits are received income-tax-free by your beneficiaries in Canada. However, tax rules can be complex and depend on your specific situation. Sara always recommends consulting a qualified tax advisor for advice tailored to your circumstances.",
   },
   {
     q: "How much life insurance do I need?",
-    a: "A common rule of thumb is 10–12 times your annual income. A more detailed approach is the DIME method: add up your Debt, Income replacement (10 years), Mortgage balance, and Education costs for your children. For example, if you earn $60,000/year, have a $200,000 mortgage, and $50,000 in other debts, you might need $850,000 or more in coverage. I'll help you calculate the right amount on your free consultation call.",
+    a: "A common starting point is 10–12 times your annual income, but the right amount depends on your specific situation — including your debts, mortgage, income, and the number of dependants you have. Sara will conduct a complimentary Financial Needs Analysis (FNA) during your free Zoom consultation to help you determine the right coverage amount for your family.",
   },
   {
     q: "Can I change my coverage later?",
-    a: "Yes. Many term policies include a conversion option that lets you convert to a permanent policy without a new medical exam. You can also apply for additional coverage as your needs change. Some policies allow you to add riders (such as a child rider or disability waiver) at any time. If your health improves, you may even be able to qualify for better rates by applying for a new policy. I'll review your coverage annually to make sure it still fits your needs.",
+    a: "Many term life policies include options to adjust or convert your coverage as your needs change. Sara will review your coverage regularly to make sure it continues to meet your family's needs as your life circumstances evolve.",
   },
   {
-    q: "Why should I use an independent agent instead of buying directly?",
-    a: "When you buy directly from an insurance company, you only see their products at their prices. As an independent agent, I'm not tied to any single carrier — I compare rates and coverage from dozens of A-rated companies to find you the best deal. My consultation is free (I'm paid by the carrier, not by you), and I have no incentive to push you toward a plan that doesn't fit. You get expert guidance, personalized options, and ongoing support — all at no extra cost.",
+    q: "Why should I work with Sara instead of buying directly online?",
+    a: "Working with a Licensed Life Insurance Representative like Sara means you get personalised guidance through the process — from determining the right coverage amount to completing your application. Sara conducts a complimentary Financial Needs Analysis to ensure your coverage is tailored to your family's specific situation. Her consultation is free and there is no obligation to purchase.",
   },
 ];
 
@@ -62,7 +64,7 @@ export default function FAQ() {
       <div className="pt-16 lg:pt-20">
         <PageHeader
           title="Frequently Asked Questions"
-          subtitle="Honest answers to the most common life insurance questions."
+          subtitle="Honest answers to the most common life insurance questions — in the context of Primerica Canada coverage in Ontario."
           breadcrumbs={[{ label: "FAQ" }]}
         />
 
@@ -94,13 +96,18 @@ export default function FAQ() {
             <div className="mt-12 bg-[#1a365d] rounded-2xl p-8 text-center text-white">
               <h3 className="font-['Playfair_Display'] text-xl font-bold mb-3">Still Have Questions?</h3>
               <p className="text-blue-200 text-sm mb-6 leading-relaxed">
-                Every situation is unique. Book a free 20-minute Zoom call with Sara and get personalized answers to all your questions.
+                Every situation is unique. Book a free 20-minute Zoom call with Sara and get personalised answers about Primerica Canada coverage for your family.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link href="/book" className="btn-gold">Book a Free Call</Link>
                 <Link href="/contact" className="btn-outline-white text-sm">Send a Message</Link>
               </div>
             </div>
+
+            {/* Compliance disclaimer */}
+            <p className="mt-8 text-gray-400 text-xs text-center leading-relaxed">
+              Sara Siblini | Licensed Life Insurance Representative | Primerica Life Insurance Company of Canada | FSRA Lic. #NUV56 | Licensed in Ontario, Canada. The information on this page is for general educational purposes only and does not constitute financial or legal advice.
+            </p>
           </div>
         </section>
       </div>

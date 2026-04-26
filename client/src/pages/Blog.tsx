@@ -26,7 +26,7 @@ export const BLOG_POSTS = [
     emoji: "⚖️",
     category: "Education",
     categoryColor: "bg-purple-100 text-purple-700",
-    title: "Term vs. Whole Life Insurance: Which Is Right for You?",
+    title: "Term vs. Whole Life Insurance: What's the Difference?",
     excerpt: "The term vs. whole life debate is one of the most common questions in insurance. Here's a clear, honest comparison to help you decide.",
     date: "February 28, 2025",
     readTime: "7 min read",
@@ -46,8 +46,8 @@ export const BLOG_POSTS = [
     emoji: "🌿",
     category: "Seniors",
     categoryColor: "bg-amber-100 text-amber-700",
-    title: "What Is Final Expense Insurance and Who Needs It?",
-    excerpt: "Funerals cost $7,000–$12,000 on average. Final expense insurance ensures your family isn't left with that burden. Here's everything you need to know.",
+    title: "What Is Final Expense Insurance? An Educational Overview",
+    excerpt: "Funeral and end-of-life costs can place a significant financial burden on families. Here's what final expense coverage is, who it's for, and whether it's right for you.",
     date: "January 22, 2025",
     readTime: "5 min read",
   },
@@ -67,7 +67,7 @@ export const BLOG_POSTS = [
     category: "Tips",
     categoryColor: "bg-teal-100 text-teal-700",
     title: "How to Choose a Life Insurance Agent You Can Trust",
-    excerpt: "Not all agents are created equal. Here's what to look for, red flags to avoid, and why working with an independent agent almost always gets you a better deal.",
+    excerpt: "Not all life insurance representatives are created equal. Here's what to look for, red flags to avoid, and how to find someone you can trust to guide your family.",
     date: "December 18, 2024",
     readTime: "6 min read",
   },
@@ -106,7 +106,7 @@ export default function Blog() {
                     <p className="text-gray-600 text-sm leading-relaxed mb-4">{post.excerpt}</p>
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                       <div>
-                        <p className="text-xs font-semibold text-[#1a365d]">Sara</p>
+                        <p className="text-xs font-semibold text-[#1a365d]">Sara Siblini</p>
                         <p className="text-xs text-gray-400">{post.date} · {post.readTime}</p>
                       </div>
                       <Link

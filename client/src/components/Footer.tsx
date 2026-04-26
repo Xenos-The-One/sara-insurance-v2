@@ -1,6 +1,7 @@
 /* =============================================================
-   FOOTER — Sara Life Insurance
+   FOOTER — Sara Siblini | Primerica Life Insurance Company of Canada
    Design: Dark navy, 4-column layout, gold accents
+   Canadian context: Ontario, FSRA, Primerica Canada
    ============================================================= */
 import { Link } from "wouter";
 import { Heart, Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
@@ -19,14 +20,14 @@ export default function Footer() {
               <div className="w-8 h-8 bg-[#d69e2e] rounded-full flex items-center justify-center flex-shrink-0">
                 <Heart className="w-4 h-4 text-white fill-white" />
               </div>
-              <span className="font-['Playfair_Display'] font-bold text-lg">Sara Life Insurance</span>
+              <span className="font-['Playfair_Display'] font-bold text-lg">Sara Siblini</span>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed mb-4">
-              Independent life insurance agent helping families protect what matters most. Free consultations, no-obligation quotes, and personalized coverage plans.
+              Licensed Life Insurance Representative with Primerica Life Insurance Company of Canada, helping families in Toronto and the GTA protect what matters most.
             </p>
             <p className="text-gray-400 text-xs">
-              License #: <span className="text-gray-300">[YOUR LICENSE NUMBER]</span><br />
-              Licensed in <span className="text-gray-300">[YOUR STATE]</span>
+              FSRA Lic. #: <span className="text-gray-300">NUV56</span><br />
+              Licensed in <span className="text-gray-300">Ontario, Canada</span>
             </p>
             {/* Social Links */}
             <div className="flex gap-3 mt-5">
@@ -77,8 +78,8 @@ export default function Footer() {
                 { label: "Blog & Articles", href: "/blog" },
                 { label: "FAQ", href: "/faq" },
                 { label: "Term Life Insurance", href: "/services#term" },
-                { label: "Whole Life Insurance", href: "/services#whole" },
-                { label: "Final Expense", href: "/services#final" },
+                { label: "Financial Needs Analysis", href: "/services#fna" },
+                { label: "Family Income Protection", href: "/services#fip" },
                 { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Service", href: "/terms" },
               ].map((link) => (
@@ -98,21 +99,21 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-[#d69e2e] mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300 text-sm">[YOUR PHONE NUMBER]</p>
+                  <p className="text-gray-300 text-sm">[SARA TO FILL IN — business phone number]</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-[#d69e2e] mt-0.5 flex-shrink-0" />
                 <div>
-                  <a href="mailto:sara@sarainsurance.com" className="text-gray-300 text-sm hover:text-[#d69e2e] transition-colors">
-                    sara@sarainsurance.com
+                  <a href="#" className="text-gray-300 text-sm hover:text-[#d69e2e] transition-colors">
+                    [SARA TO FILL IN — business email address]
                   </a>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#d69e2e] mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300 text-sm">[YOUR CITY], [YOUR STATE]</p>
+                  <p className="text-gray-300 text-sm">Toronto, Ontario</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
@@ -130,11 +131,20 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Compliance Line */}
+      <div className="border-t border-white/10">
+        <div className="container mx-auto px-4 lg:px-8 py-4">
+          <p className="text-gray-400 text-xs text-center leading-relaxed">
+            Sara Siblini | Licensed Life Insurance Representative | Primerica Life Insurance Company of Canada | FSRA Lic. #NUV56 | Licensed in Ontario, Canada
+          </p>
+        </div>
+      </div>
+
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-gray-400 text-xs text-center sm:text-left">
-            © {year} Sara Life Insurance. All rights reserved. | Licensed Independent Agent
+            © {year} Sara Siblini | Primerica Life Insurance Company of Canada. All rights reserved.
           </p>
           <div className="flex gap-5">
             <Link href="/privacy" className="text-gray-400 hover:text-[#d69e2e] text-xs transition-colors">

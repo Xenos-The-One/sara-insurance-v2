@@ -60,7 +60,7 @@ export default function Book() {
                 <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mb-6">Benefits of Booking</h3>
                 <div className="space-y-4">
                   {[
-                    { icon: DollarSign, title: "100% Free", desc: "No cost to you, ever. Sara is paid by the carrier." },
+                    { icon: DollarSign, title: "100% Free", desc: "No cost to you, ever. Sara is compensated by Primerica Canada." },
                     { icon: Shield, title: "No Obligation", desc: "You're under no pressure to buy anything." },
                     { icon: Clock, title: "20–30 Minutes", desc: "Quick, focused, and respectful of your time." },
                     { icon: Video, title: "Done on Zoom", desc: "No office visit. Meet from anywhere." },

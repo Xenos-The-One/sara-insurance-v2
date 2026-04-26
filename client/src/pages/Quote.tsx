@@ -169,7 +169,7 @@ export default function Quote() {
                       </div>
                       <div>
                         <label className="form-label">Phone Number *</label>
-                        <input className="form-input" type="tel" value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="(555) 123-4567" />
+                        <input className="form-input" type="tel" value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="(416) 555-1234" />
                       </div>
                       <p className="text-xs text-gray-400">Your information is kept private and never sold. I'll only use it to follow up about your quote.</p>
                     </div>
@@ -237,8 +237,8 @@ export default function Quote() {
                       <h3 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d]">Coverage Details</h3>
                       <div>
                         <label className="form-label">Coverage Type *</label>
-                        <div className="grid grid-cols-3 gap-3">
-                          {["Term", "Whole Life", "Final Expense"].map(t => (
+                        <div className="grid grid-cols-2 gap-3">
+                          {["Term Life"].map(t => (
                             <button
                               key={t}
                               type="button"
@@ -354,7 +354,7 @@ export default function Quote() {
                 </div>
 
                 <p className="text-xs text-gray-400 mb-8 leading-relaxed">
-                  ⚠️ Actual rates depend on full underwriting. Final pricing confirmed on your consultation call.
+                  ⚠️ This estimate is for illustrative purposes only and does not constitute a binding quote or offer of insurance. Actual rates are subject to full underwriting by Primerica Life Insurance Company of Canada and may differ. All amounts shown are in Canadian dollars (CAD). Final pricing confirmed on your consultation call.
                 </p>
 
                 <div className="space-y-3">

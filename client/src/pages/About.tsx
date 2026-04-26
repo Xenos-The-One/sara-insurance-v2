@@ -16,8 +16,8 @@ export default function About() {
       <Navbar />
       <div className="pt-16 lg:pt-20">
         <PageHeader
-          title="About Sara"
-          subtitle="Licensed independent life insurance agent dedicated to helping families get the protection they deserve."
+          title="About Sara Siblini"
+          subtitle="Licensed Life Insurance Representative with Primerica Life Insurance Company of Canada, serving Toronto and the Greater Toronto Area."
           breadcrumbs={[{ label: "About" }]}
         />
 
@@ -32,7 +32,7 @@ export default function About() {
                   <div className="w-72 h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-[#d69e2e] shadow-2xl">
                     <img
                       src={AGENT_IMG}
-                      alt="Sara — Licensed Life Insurance Agent"
+                      alt="Sara Siblini — Licensed Life Insurance Representative, Primerica Canada"
                       className="w-full h-full object-cover object-top"
                     />
                   </div>
@@ -46,21 +46,21 @@ export default function About() {
 
               {/* Bio */}
               <div>
-                <span className="section-label">Meet Your Agent</span>
-                <h2 className="section-title">Hi, I'm Sara</h2>
+                <span className="section-label">Meet Your Representative</span>
+                <h2 className="section-title">Hi, I'm Sara Siblini</h2>
                 <div className="gold-divider" />
                 <div className="space-y-4 text-gray-700 leading-relaxed">
                   <p>
-                    I'm a licensed life insurance agent passionate about helping families get the protection they need — without the confusion, pressure, or hidden fees that come with traditional insurance sales.
+                    [SARA TO FILL IN — personal biography paragraph]
                   </p>
                   <p>
-                    My consultation is <strong className="text-[#1a365d]">100% free</strong> — I'm paid by the insurance carrier, not by you. That means I have no reason to push you toward a plan that doesn't fit your needs or budget.
+                    I'm a Licensed Life Insurance Representative with <strong className="text-[#1a365d]">Primerica Life Insurance Company of Canada</strong>, passionate about helping families in Toronto and the GTA get the protection they need — without confusion, pressure, or hidden fees.
                   </p>
                   <p>
-                    As an <strong className="text-[#1a365d]">independent agent</strong>, I work with multiple A-rated carriers to find the best rates and coverage for your specific situation. I'm not locked into one company's products.
+                    My consultation is <strong className="text-[#1a365d]">100% free</strong>. I'll walk you through a Financial Needs Analysis to determine the right coverage for your family's specific situation and budget.
                   </p>
                   <p>
-                    Everything is done via <strong className="text-[#1a365d]">Zoom video call</strong> — no office visit needed, no awkward in-home sales presentations. Just a relaxed, informative conversation at a time that works for you.
+                    Everything is done via <strong className="text-[#1a365d]">Zoom video call</strong> — no office visit needed. Just a relaxed, informative conversation at a time that works for you.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3 mt-8">
@@ -129,12 +129,12 @@ export default function About() {
                 {
                   icon: Award,
                   title: "Licensed & Certified",
-                  desc: "State-licensed life insurance agent. License #[YOUR LICENSE NUMBER]. Fully compliant and regulated.",
+                  desc: "Licensed Life Insurance Representative with Primerica Canada. FSRA Lic. #NUV56. Licensed in Ontario, Canada.",
                 },
                 {
                   icon: Users,
-                  title: "Multiple Carriers",
-                  desc: "I work with dozens of A-rated insurance carriers to find you the best rate — not just one company's products.",
+                  title: "Primerica Canada",
+                  desc: "Coverage is provided through Primerica Life Insurance Company of Canada, a trusted name in Canadian life insurance.",
                 },
                 {
                   icon: Laptop,

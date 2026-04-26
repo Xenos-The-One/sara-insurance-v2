@@ -37,14 +37,14 @@ export default function Home() {
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-24 pb-16">
           <div className="max-w-2xl">
-            <span className="section-label">Licensed Independent Agent</span>
+            <span className="section-label">Licensed Life Insurance Representative | Primerica Canada</span>
             <h1 className="font-['Playfair_Display'] text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Protect Your<br />
               <span className="text-[#d69e2e]">Family's Future</span><br />
               Today
             </h1>
             <p className="text-blue-100 text-lg lg:text-xl leading-relaxed mb-8 max-w-xl">
-              Get personalized life insurance coverage from a licensed independent agent. Free consultation, no-obligation quotes, and plans tailored to your family's needs.
+              Get personalized term life insurance coverage from a Licensed Life Insurance Representative with Primerica Canada. Free consultation, no-obligation quotes, and plans tailored to your family's needs.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/quote" className="btn-gold text-base px-8 py-3.5">
@@ -56,7 +56,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex flex-wrap gap-6 mt-10">
-              {["100% Free Consultation", "No Medical Exam Options", "Multiple A-Rated Carriers"].map((item) => (
+              {["100% Free Consultation", "No Medical Exam Options", "Primerica Life Insurance Company of Canada"].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-blue-100 text-sm">
                   <CheckCircle className="w-4 h-4 text-[#d69e2e] flex-shrink-0" />
                   {item}
@@ -78,8 +78,8 @@ export default function Home() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { icon: Award, label: "Licensed Agent", sub: "State Certified" },
-              { icon: Shield, label: "A-Rated Carriers", sub: "Top Insurers" },
+              { icon: Award, label: "Licensed Agent", sub: "FSRA Certified" },
+              { icon: Shield, label: "Primerica Canada", sub: "Trusted Coverage" },
               { icon: FileText, label: "No-Obligation Quotes", sub: "100% Free" },
               { icon: Users, label: "Personalized Plans", sub: "Tailored to You" },
             ].map(({ icon: Icon, label, sub }) => (
@@ -126,8 +126,8 @@ export default function Home() {
               },
               {
                 icon: TrendingUp,
-                title: "Build Long-Term Wealth",
-                desc: "Whole life policies build cash value over time, creating a financial asset you can borrow against or use for retirement.",
+                title: "Plan for Your Family's Future",
+                desc: "A Financial Needs Analysis helps identify the right coverage amount so your family is protected — and your financial goals stay on track.",
                 color: "bg-amber-50",
                 iconColor: "text-[#d69e2e]",
               },
@@ -164,21 +164,21 @@ export default function Home() {
                 highlight: false,
               },
               {
-                title: "Whole Life Insurance",
-                emoji: "🏦",
-                price: "From ~$50/mo",
-                desc: "Lifetime coverage that never expires, with a cash value component that grows over time. A financial asset and protection in one.",
-                features: ["Lifetime coverage", "Cash value growth", "Fixed premiums forever", "Tax-advantaged savings"],
-                href: "/services#whole",
+                title: "Financial Needs Analysis",
+                emoji: "📊",
+                price: "100% Free",
+                desc: "A thorough review of your family's financial situation to determine the right type and amount of life insurance coverage for your needs.",
+                features: ["Personalised coverage review", "No obligation", "Done via Zoom", "Takes 20–30 minutes"],
+                href: "/services#fna",
                 highlight: true,
               },
               {
-                title: "Final Expense Insurance",
-                emoji: "🌿",
-                price: "From ~$20/mo",
-                desc: "Designed for seniors ages 50–85. Covers funeral costs and end-of-life expenses. No medical exam required.",
-                features: ["$5K–$25K coverage", "No medical exam", "Guaranteed acceptance options", "Ages 50–85"],
-                href: "/services#final",
+                title: "Family Income Protection",
+                emoji: "🏡",
+                price: "Rates vary",
+                desc: "Ensure your family can maintain their standard of living — covering mortgage payments, daily expenses, and future goals if you're no longer there.",
+                features: ["Income replacement planning", "Mortgage protection", "Children's education funding", "Tailored to your budget"],
+                href: "/services#fip",
                 highlight: false,
               },
             ].map((svc) => (
@@ -242,7 +242,7 @@ export default function Home() {
             {[
               { step: "01", icon: FileText, title: "Get a Free Quote", desc: "Fill out our 2-minute quote form to see estimated rates based on your age, health, and coverage needs." },
               { step: "02", icon: Calendar, title: "Book a Zoom Call", desc: "Schedule a free 20–30 minute consultation at a time that works for you. No office visit required." },
-              { step: "03", icon: Users, title: "Review Your Options", desc: "Sara compares rates from multiple A-rated carriers and presents the best options for your situation." },
+              { step: "03", icon: Users, title: "Review Your Options", desc: "Sara presents Primerica Canada coverage options tailored to your situation, budget, and family's needs." },
               { step: "04", icon: CheckCircle, title: "Get Covered", desc: "Choose your plan, complete the application, and get your coverage in place — often within days." },
             ].map((s) => (
               <div key={s.step} className="relative">
@@ -265,7 +265,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* ── TESTIMONIALS PLACEHOLDER ── */}
       <section className="py-20 bg-[#f7f8fc]">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-14">
@@ -273,44 +273,12 @@ export default function Home() {
             <h2 className="section-title">Families Who Found Peace of Mind</h2>
             <div className="gold-divider mx-auto" />
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Michael & Jennifer T.",
-                location: "Austin, TX",
-                initials: "MJ",
-                text: "Sara made the whole process so easy. We got term life coverage for both of us in under a week. She explained everything clearly and never pressured us. Highly recommend!",
-                plan: "Term Life — $500K",
-              },
-              {
-                name: "Robert K.",
-                location: "Chicago, IL",
-                initials: "RK",
-                text: "I was skeptical at first, but Sara's Zoom consultation was incredibly helpful. She compared rates from 5 different carriers and saved me over $40/month vs. what I was quoted elsewhere.",
-                plan: "Whole Life — $250K",
-              },
-              {
-                name: "Dorothy M.",
-                location: "Phoenix, AZ",
-                initials: "DM",
-                text: "At 72, I thought I couldn't get affordable coverage. Sara found me a final expense policy that fits my budget perfectly. The application was simple and no medical exam was needed.",
-                plan: "Final Expense — $15K",
-              },
-            ].map((t) => (
-              <div key={t.name} className="bg-white rounded-xl p-7 shadow-sm border border-gray-100 card-hover">
-                <div className="stars mb-4">★★★★★</div>
-                <p className="text-gray-700 leading-relaxed text-sm mb-6 italic">"{t.text}"</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                  <div className="w-10 h-10 rounded-full bg-[#1a365d] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1a365d] text-sm">{t.name}</p>
-                    <p className="text-gray-400 text-xs">{t.location} · {t.plan}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="bg-white rounded-xl p-10 shadow-sm border border-dashed border-[#d69e2e] text-center max-w-2xl mx-auto">
+            <Star className="w-10 h-10 text-[#d69e2e] mx-auto mb-4" />
+            <p className="text-[#1a365d] font-['Playfair_Display'] text-xl font-bold mb-3">Client Testimonials Coming Soon</p>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              [SARA TO FILL IN — real client testimonials, once Sara has clients who have provided written consent]
+            </p>
           </div>
         </div>
       </section>

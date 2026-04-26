@@ -45,7 +45,7 @@ export default function Navbar() {
             <div className="w-8 h-8 bg-[#d69e2e] rounded-full flex items-center justify-center flex-shrink-0">
               <Heart className="w-4 h-4 text-white fill-white" />
             </div>
-            <span className="font-['Playfair_Display'] font-bold">Sara Life Insurance</span>
+            <span className="font-['Playfair_Display'] font-bold">Sara Siblini</span>
           </Link>
 
           {/* Desktop Nav */}

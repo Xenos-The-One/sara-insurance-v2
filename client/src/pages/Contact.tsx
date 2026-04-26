@@ -45,9 +45,9 @@ export default function Contact() {
                 <h2 className="font-['Playfair_Display'] text-2xl font-bold text-[#1a365d] mb-6">Contact Information</h2>
                 <div className="space-y-4 mb-8">
                   {[
-                    { icon: Phone, label: "Phone", value: "[YOUR PHONE NUMBER]", href: "tel:[YOUR PHONE NUMBER]" },
-                    { icon: Mail, label: "Email", value: "sara@sarainsurance.com", href: "mailto:sara@sarainsurance.com" },
-                    { icon: MapPin, label: "Location", value: "[YOUR CITY], [YOUR STATE]", href: undefined },
+                    { icon: Phone, label: "Phone", value: "[SARA TO FILL IN — business phone]", href: "#" },
+                    { icon: Mail, label: "Email", value: "[SARA TO FILL IN — business email]", href: "#" },
+                    { icon: MapPin, label: "Location", value: "Toronto, Ontario, Canada", href: undefined },
                     { icon: Clock, label: "Office Hours", value: "Mon–Fri: 9am–6pm | Sat: 10am–2pm", href: undefined },
                   ].map(({ icon: Icon, label, value, href }) => (
                     <div key={label} className="flex items-start gap-4 bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
@@ -117,7 +117,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <label className="form-label">Phone Number</label>
-                    <input type="tel" className="form-input" value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="(555) 123-4567" />
+                    <input type="tel" className="form-input" value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="(416) 555-1234" />
                   </div>
                   <div>
                     <label className="form-label">Subject *</label>

@@ -1,43 +1,27 @@
 import BlogArticle from "@/components/BlogArticle";
 export default function FinalExpense() {
   return (
-    <BlogArticle slug="final-expense-insurance" title="What Is Final Expense Insurance and Who Needs It?" category="Seniors" date="January 22, 2025" readTime="5 min read">
-      <p>Nobody likes to think about end-of-life planning. But the reality is that funerals and burial costs can place a significant financial burden on the families left behind — at a time when they're already dealing with grief. Final expense insurance is designed specifically to prevent that burden.</p>
+    <BlogArticle slug="final-expense-insurance" title="What Is Final Expense Insurance? An Educational Overview" category="Seniors" date="January 22, 2025" readTime="5 min read">
+      <p>Nobody likes to think about end-of-life planning. But the reality is that funeral and burial costs can place a significant financial burden on the families left behind — at a time when they're already dealing with grief. This article provides a general educational overview of what final expense insurance is and how it works. <strong>Please note: Sara Siblini does not sell final expense insurance. Sara offers term life insurance through Primerica Life Insurance Company of Canada.</strong></p>
 
       <h2>What Is Final Expense Insurance?</h2>
-      <p>Final expense insurance (also called burial insurance or funeral insurance) is a type of whole life insurance policy with a smaller death benefit — typically between $5,000 and $25,000. It's designed to cover funeral costs, burial expenses, outstanding medical bills, and other end-of-life expenses.</p>
-      <p>Unlike traditional life insurance, final expense policies are specifically designed to be accessible to seniors, with simplified underwriting and no medical exam required in most cases.</p>
+      <p>Final expense insurance (sometimes called burial insurance or funeral insurance) is a type of whole life insurance policy with a smaller death benefit — typically designed to cover funeral costs, burial expenses, outstanding medical bills, and other end-of-life expenses. Unlike traditional term life insurance, it is designed to be accessible to seniors with simplified underwriting.</p>
+      <p>This product is offered by various insurance companies in Canada. It is <em>not</em> a product offered by Sara Siblini or Primerica Life Insurance Company of Canada.</p>
 
-      <h2>How Much Does a Funeral Cost?</h2>
-      <p>According to the National Funeral Directors Association, the median cost of a funeral with burial in the United States is approximately <strong>$7,848</strong>. When you add cemetery costs, headstone, flowers, obituary, and other expenses, the total can easily reach <strong>$10,000–$15,000 or more</strong>.</p>
-      <p>Cremation is less expensive but still averages $6,000–$8,000 when all costs are included. Without insurance, these costs typically fall on surviving family members — often at a time when they're least prepared to handle them.</p>
+      <h2>How Much Do Funerals Cost in Canada?</h2>
+      <p>Funeral and end-of-life costs in Canada vary significantly by province and the type of service chosen. A traditional funeral with burial can cost anywhere from several thousand to over $15,000 CAD when all expenses are included. Cremation services are generally less expensive but still represent a meaningful cost. Without financial planning, these costs typically fall on surviving family members.</p>
 
-      <h2>Who Qualifies for Final Expense Insurance?</h2>
-      <p>Final expense insurance is available to seniors between the ages of 50 and 85. The application process is much simpler than traditional life insurance:</p>
-      <ul>
-        <li><strong>Level benefit plans:</strong> Require answering a few health questions. Full death benefit from day one. Best for those in reasonably good health.</li>
-        <li><strong>Graded benefit plans:</strong> For those with some health issues. Partial benefit in years 1–2, full benefit after year 2.</li>
-        <li><strong>Guaranteed issue plans:</strong> No health questions whatsoever. Accepted regardless of health status. Higher premiums and a 2-year waiting period apply.</li>
-      </ul>
+      <h2>How Does Final Expense Insurance Differ from Term Life?</h2>
+      <p>Term life insurance — the product Sara offers through Primerica Canada — provides a much larger death benefit for a defined period and is primarily designed to replace income and protect a family's financial future. Final expense insurance, by contrast, is a smaller permanent policy focused specifically on covering end-of-life costs for seniors.</p>
+      <p>For many Canadians, a well-sized term life policy during their working years can also provide funds that beneficiaries may use for any purpose — including funeral costs — while also covering far larger financial needs like mortgage debt and income replacement.</p>
 
-      <h2>No Medical Exam Required</h2>
-      <p>One of the biggest advantages of final expense insurance is that it doesn't require a medical exam. Most plans only ask a handful of health questions, and guaranteed issue plans ask none at all. This makes coverage accessible to seniors with pre-existing conditions like diabetes, heart disease, COPD, or a history of cancer.</p>
-
-      <h2>How Much Does Final Expense Insurance Cost?</h2>
-      <p>Premiums vary based on your age, gender, health, and the coverage amount you choose. As a general guide:</p>
-      <ul>
-        <li>A healthy 65-year-old woman might pay $30–$45/month for $10,000 in coverage</li>
-        <li>A healthy 65-year-old man might pay $40–$60/month for $10,000 in coverage</li>
-        <li>Guaranteed issue plans typically cost 20–40% more than standard plans</li>
-      </ul>
-      <p>Premiums are fixed for life — they will never increase, and the policy will never be cancelled as long as you pay your premiums.</p>
-
-      <h2>Is Final Expense Insurance Right for You?</h2>
-      <p>Final expense insurance is a good fit if you're a senior who wants to ensure your family isn't burdened with funeral costs, you don't have significant savings set aside for end-of-life expenses, you have pre-existing health conditions that make traditional life insurance difficult to obtain, or you want a simple, affordable policy with no medical exam.</p>
+      <h2>What If You're a Senior Looking for Coverage?</h2>
+      <p>If you are a senior interested in coverage options, Sara recommends speaking with a licensed insurance professional who specialises in senior products. Sara's focus is on helping working-age Canadians and young families protect their income and dependants through term life insurance.</p>
+      <p>If you have family members in their working years who are uninsured or underinsured, Sara would be happy to help them explore term life coverage through a free consultation.</p>
 
       <h2>The Bottom Line</h2>
-      <p>Final expense insurance is one of the most compassionate gifts you can give your family. It ensures that when the time comes, they can focus on celebrating your life rather than worrying about how to pay for your funeral. Coverage is accessible, affordable, and available to nearly everyone.</p>
-      <p>If you're interested in learning more, book a free consultation. I work with multiple carriers that specialize in final expense coverage and can find you the best rate for your situation.</p>
+      <p>End-of-life financial planning is an important topic for Canadian families. Whether through term life insurance, final expense coverage, or savings, having a plan in place protects the people you love from unexpected financial burdens. If term life insurance is right for your situation, Sara is here to help.</p>
+      <p className="text-xs text-gray-400 mt-6 border-t border-gray-100 pt-4">This article is for general educational purposes only and does not constitute financial or insurance advice. Sara Siblini does not sell final expense, burial, or whole life insurance. Sara offers term life insurance through Primerica Life Insurance Company of Canada only. Sara Siblini is a Licensed Life Insurance Representative with Primerica Life Insurance Company of Canada, FSRA Lic. #NUV56, licensed in Ontario.</p>
     </BlogArticle>
   );
 }

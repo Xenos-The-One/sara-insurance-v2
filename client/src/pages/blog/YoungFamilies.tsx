@@ -5,7 +5,7 @@ export default function YoungFamilies() {
       <p>If you have a spouse, children, or a mortgage, every day you go without life insurance is a financial risk your family is taking. I know that's a heavy statement — but it's the truth. And the good news is that life insurance for young, healthy people is more affordable than most people think.</p>
 
       <h2>The Cost of Waiting</h2>
-      <p>Life insurance premiums are primarily based on your age and health at the time you apply. The younger and healthier you are, the lower your rates will be — and those rates are locked in for the life of your policy. A 28-year-old in good health can get a $500,000 term policy for around $20/month. That same policy at age 38 might cost $35/month, and at 48, it could be $70/month or more.</p>
+      <p>Life insurance premiums are primarily based on your age and health at the time you apply. The younger and healthier you are, the lower your rates will be — and those rates are locked in for the life of your policy. Rates increase with age, so the best time to apply is when you are young and healthy. Every year you wait, you may pay more for the same coverage — or your health may change, affecting your eligibility. All rates are in Canadian dollars (CAD) and subject to underwriting approval by Primerica Life Insurance Company of Canada.</p>
       <p>Every year you wait, you're paying more for the same coverage — or worse, your health changes and you become uninsurable at standard rates. The best time to get life insurance is when you're young and healthy. The second best time is right now.</p>
 
       <h2>Protecting Your Mortgage</h2>
@@ -21,11 +21,12 @@ export default function YoungFamilies() {
       <p>Both parents need life insurance — not just the primary breadwinner. A stay-at-home parent's policy ensures the surviving partner can afford childcare, household help, and potentially reduce their work hours to be present for the children.</p>
 
       <h2>How Much Coverage Does a Young Family Need?</h2>
-      <p>A good starting point is 10–12 times your annual income, plus your mortgage balance, plus estimated education costs for your children. For a family earning $80,000/year with a $300,000 mortgage and two young children, that might mean $1.2–$1.5 million in coverage — which can be obtained for less than $50/month for a healthy person in their 30s.</p>
+      <p>A good starting point is 10–12 times your annual income, plus your mortgage balance, plus estimated education costs for your children. Sara can walk you through a complimentary Financial Needs Analysis (FNA) to calculate the right coverage amount for your family's specific situation. All figures are illustrative only and in Canadian dollars (CAD).</p>
 
       <h2>The Bottom Line</h2>
       <p>If you have people who depend on you financially, you need life insurance. It's not about being pessimistic — it's about being responsible. The cost is low, the process is simple, and the peace of mind is priceless.</p>
-      <p>Book a free consultation and I'll help you find the right coverage for your family's specific needs. Most of my young family clients are protected within a week of our first call.</p>
+      <p>Book a free consultation and Sara will help you find the right term life coverage for your family's specific needs through Primerica Life Insurance Company of Canada.</p>
+      <p className="text-xs text-gray-400 mt-6 border-t border-gray-100 pt-4">This article is for general educational purposes only and does not constitute financial or insurance advice. Coverage is subject to underwriting approval by Primerica Life Insurance Company of Canada. All amounts are in Canadian dollars (CAD). Sara Siblini is a Licensed Life Insurance Representative with Primerica Life Insurance Company of Canada, FSRA Lic. #NUV56, licensed in Ontario.</p>
     </BlogArticle>
   );
 }

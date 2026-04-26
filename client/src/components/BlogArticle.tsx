@@ -77,9 +77,9 @@ export default function BlogArticle({ slug, title, category, date, readTime, chi
               </div>
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">About the Author</p>
-                <p className="font-['Playfair_Display'] font-bold text-[#1a365d] text-base mb-1">Sara</p>
+                <p className="font-['Playfair_Display'] font-bold text-[#1a365d] text-base mb-1">Sara Siblini</p>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Sara is a licensed independent life insurance agent passionate about helping families get the protection they deserve. She works with multiple A-rated carriers and offers free consultations via Zoom. License #[YOUR LICENSE NUMBER].
+                  Sara Siblini is a Licensed Life Insurance Representative with Primerica Life Insurance Company of Canada, passionate about helping Ontario families get the protection they deserve. She offers free consultations via Zoom. FSRA Lic. #NUV56 | Licensed in Ontario.
                 </p>
               </div>
             </div>
