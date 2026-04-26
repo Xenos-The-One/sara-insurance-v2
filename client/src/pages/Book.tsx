@@ -1,80 +1,55 @@
 /* =============================================================
    BOOK A CALL PAGE — Sara Life Insurance
+   Design: Corporate Modernism meets Warm Trust
+   Navy (#1a365d) + Gold (#d69e2e) palette, Playfair Display + Inter
    Inline Calendly embed via VITE_CALENDLY_URL env var.
-   Falls back to a "Set Up Calendly" prompt if the URL is
-   not yet configured.
+   Falls back to a setup prompt if the URL is not yet configured.
    ============================================================= */
-import { useEffect } from "react";
 import { Link } from "wouter";
 import { Calendar, MessageSquare, Video, CheckCircle, Clock, DollarSign, Shield, ExternalLink } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import PageHeader from "@/components/PageHeader";
-import { CALENDLY_URL } from "@/lib/emailjs-config";
 
-// Calendly widget type declaration (loaded via CDN in index.html)
-declare global {
-  interface Window {
-    Calendly?: {
-      initInlineWidget: (opts: {
-        url: string;
-        parentElement: HTMLElement;
-        prefill?: Record<string, unknown>;
-        utm?: Record<string, unknown>;
-      }) => void;
-    };
-  }
-}
+const CALENDLY_URL = import.meta.env.VITE_CALENDLY_URL || "";
 
 const CALENDLY_CONFIGURED =
   CALENDLY_URL &&
   CALENDLY_URL !== "[SARA TO FILL IN — Calendly URL]" &&
   CALENDLY_URL.startsWith("https://calendly.com/");
 
+const EMBED_URL = CALENDLY_CONFIGURED
+  ? `${CALENDLY_URL}?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=1e40af`
+  : `https://calendly.com/YOUR_USERNAME/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=1e40af`;
+
 export default function Book() {
-  useEffect(() => {
-    if (!CALENDLY_CONFIGURED) return;
-
-    const container = document.getElementById("calendly-embed");
-    if (!container) return;
-
-    // Clear any previous content
-    container.innerHTML = "";
-
-    const tryInit = () => {
-      if (window.Calendly) {
-        window.Calendly.initInlineWidget({
-          url: CALENDLY_URL,
-          parentElement: container,
-        });
-      } else {
-        // Widget script not yet loaded — retry after a short delay
-        setTimeout(tryInit, 300);
-      }
-    };
-
-    tryInit();
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="pt-16 lg:pt-20">
         <PageHeader
-          title="Book Your Free Consultation"
-          subtitle="Choose a time that works for you. Your free 30-minute Financial Needs Analysis call with Sara is completely no-obligation."
+          title="Book Your Free Financial Needs Analysis"
+          subtitle="30 minutes · No obligation · Ontario residents only"
           breadcrumbs={[{ label: "Book a Call" }]}
         />
 
         {/* ── HOW TO BOOK ── */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="text-center mb-10">
               <span className="section-label">Simple Process</span>
               <h2 className="section-title">How to Book Your Call</h2>
               <div className="gold-divider mx-auto" />
             </div>
+
+            {/* FNA Description */}
+            <div className="max-w-2xl mx-auto text-center mb-12">
+              <p className="text-gray-600 leading-relaxed">
+                A Financial Needs Analysis (FNA) is a complimentary conversation where I take the time to understand your family's situation and help you determine how much coverage you actually need — and what you can afford. There's no pressure and nothing to buy. Just clarity.
+              </p>
+            </div>
+
             <div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
               {[
                 {
@@ -146,10 +121,6 @@ export default function Book() {
                     Sara will walk you through a Financial Needs Analysis — a structured conversation about your income, dependants, debts, and goals. You'll leave with a clear understanding of how much coverage makes sense for your family and what it would cost through Primerica Canada.
                   </p>
                 </div>
-
-                <p className="text-xs text-gray-400 mt-4 leading-relaxed">
-                  Sara Siblini | Licensed Life Insurance Representative | Primerica Life Insurance Company of Canada | FSRA Lic. #NUV56 | Serving Ontario, Canada
-                </p>
               </div>
 
               {/* Calendly Embed */}
@@ -160,10 +131,18 @@ export default function Book() {
                     <p className="text-blue-200 text-sm">All times shown in your local timezone</p>
                   </div>
 
+                  {/* ── Compliance Note — appears above the calendar widget ── */}
+                  <div className="px-6 pt-4 pb-2">
+                    <p className="text-xs text-gray-500 leading-relaxed border-l-2 border-[#d69e2e] pl-3">
+                      This consultation is with Sara Siblini, Licensed Life Insurance Representative, Primerica Life Insurance Company of Canada | FSRA Lic. #NUV56 | Ontario, Canada
+                    </p>
+                  </div>
+
                   {CALENDLY_CONFIGURED ? (
-                    /* ── LIVE EMBED — populated by useEffect ── */
+                    /* ── LIVE EMBED — Calendly widget.js reads data-url and renders inline ── */
                     <div
-                      id="calendly-embed"
+                      className="calendly-inline-widget w-full"
+                      data-url={EMBED_URL}
                       style={{ minWidth: "320px", height: "700px" }}
                     />
                   ) : (
@@ -195,6 +174,13 @@ export default function Book() {
                       </a>
                     </div>
                   )}
+
+                  {/* ── Post-booking instructions — appears below the calendar widget ── */}
+                  <div className="px-6 py-4 border-t border-gray-100 bg-gray-50">
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      After booking, you'll receive a Calendly confirmation email with a link to your appointment. If you need to reschedule, you can do so directly from that email.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
