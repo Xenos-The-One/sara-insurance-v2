@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import { BLOG_POSTS } from "@/pages/Blog";
 
-const AGENT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663368367743/8QihdGFBc98MfQRykrPuzF/hero-consultation-E55AjJXGjGAwtJzk7xXQa6.webp";
+const AGENT_IMG = "/manus-storage/sara-headshot_fbd8ebe5.webp";
 
 interface BlogArticleProps {
   slug: string;

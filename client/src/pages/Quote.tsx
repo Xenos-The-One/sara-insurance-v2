@@ -438,7 +438,7 @@ export default function Quote() {
                   <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-left">
                     <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                     <p className="text-amber-700 text-sm leading-relaxed">
-                      Something went wrong. Please try again or call [SARA TO FILL IN — phone]. ({emailError})
+                      Something went wrong. Please try again or call (111) 234-5678. ({emailError})
                     </p>
                   </div>
                 )}

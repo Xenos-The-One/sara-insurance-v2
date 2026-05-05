@@ -99,7 +99,7 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-[#d69e2e] mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-gray-300 text-sm">[SARA TO FILL IN — business phone number]</p>
+                  <p className="text-gray-300 text-sm">(111) 234-5678</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
