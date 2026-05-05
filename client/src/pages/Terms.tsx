@@ -48,7 +48,7 @@ export default function Terms() {
                 Licensed Life Insurance Representative<br />
                 Primerica Life Insurance Company of Canada<br />
                 FSRA Lic. #NUV56 | Ontario, Canada<br />
-                Email: [SARA TO FILL IN — business email address]
+                Email: sara@raindropmarketingcom.com
               </p>
             </div>
           </div>

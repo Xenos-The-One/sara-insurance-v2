@@ -68,7 +68,7 @@ export default function Contact() {
       console.error("[EmailJS] Contact form send failed:", err);
       const message = err instanceof Error ? err.message : "Unknown error";
       setErrorMsg(
-        `Something went wrong sending your message. Please call (111) 234-5678 or try again. (${message})`
+        `Something went wrong sending your message. Please email sara@raindropmarketingcom.com or call (111) 234-5678 and try again. (${message})`
       );
       setSubmitState("error");
     }
@@ -93,7 +93,7 @@ export default function Contact() {
                 <div className="space-y-4 mb-8">
                   {[
                     { icon: Phone, label: "Phone", value: "(111) 234-5678", href: "tel:+11112345678" },
-                    { icon: Mail, label: "Email", value: "[SARA TO FILL IN — business email]", href: "#" },
+                    { icon: Mail, label: "Email", value: "sara@raindropmarketingcom.com", href: "mailto:sara@raindropmarketingcom.com" },
                     { icon: MapPin, label: "Location", value: "Toronto, Ontario, Canada", href: undefined },
                     { icon: Clock, label: "Office Hours", value: "Mon–Fri: 9am–6pm | Sat: 10am–2pm", href: undefined },
                   ].map(({ icon: Icon, label, value, href }) => (

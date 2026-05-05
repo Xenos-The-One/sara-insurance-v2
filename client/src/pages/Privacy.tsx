@@ -31,7 +31,7 @@ export default function Privacy() {
               <p>When you submit a form on this site, your information is transmitted via EmailJS (emailjs.com) and logged to a secure spreadsheet accessible only to Sara Siblini. You may receive follow-up communication from Sara at the email or phone number you provided.</p>
 
               <h2 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mt-8">Your Rights Under PIPEDA</h2>
-              <p>Under Canada's <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA), you have the right to: access the personal information we hold about you, request correction of inaccurate information, and request deletion of your information. To exercise these rights, contact: [SARA TO FILL IN — business email address]</p>
+              <p>Under Canada's <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA), you have the right to: access the personal information we hold about you, request correction of inaccurate information, and request deletion of your information. To exercise these rights, contact: sara@raindropmarketingcom.com</p>
 
               <h2 className="font-['Playfair_Display'] text-xl font-bold text-[#1a365d] mt-8">Cookies</h2>
               <p>This website may use analytics cookies to understand how visitors use the site. No personal information is stored in cookies.</p>
@@ -45,8 +45,8 @@ export default function Privacy() {
                 Licensed Life Insurance Representative<br />
                 Primerica Life Insurance Company of Canada<br />
                 FSRA Lic. #NUV56 | Ontario, Canada<br />
-                Email: [SARA TO FILL IN — business email address]<br />
-                Phone: [SARA TO FILL IN — business phone number]
+                Email: sara@raindropmarketingcom.com<br />
+                Phone: (111) 234-5678
               </p>
             </div>
           </div>
